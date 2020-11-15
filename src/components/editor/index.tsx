@@ -5,8 +5,11 @@ import 'easymde/dist/easymde.min.css';
 import copy from 'copy-to-clipboard';
 import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import gfm from 'remark-gfm';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import '../../../src/App.css';
-import { inspectSyntax } from './inspectSyntax';
+import { inspectSyntax, nomalizedText } from './inspectSyntax';
 
 const title: ICommand = {
   name: 'title',
@@ -111,16 +114,46 @@ function Editor() {
   const [value, setValue]: any = useState(getBase());
   const [errors, setErrors]: any = useState([]);
   // eslint-disable-next-line no-unused-vars
-  const [last, setLast]: any = useState(false);
+  const titleErrorToast = () => {
+    toast.error('❌ 단어 제목이 존재해야합니다!', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+  };
+  const errorToast = () => {
+    toast.error('❌ Error exist!', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+  };
+  const successToast = () => {
+    toast.success('✔️ 복사되었습니다.!', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+  };
 
   useEffect(() => {
     debounceInspectError(value, setErrors);
-    setLast((last: boolean) => !last);
   }, [value]);
 
-  console.log(errors);
-
   return (
+    <>
     <>
       <div style={{ padding: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -161,7 +194,7 @@ function Editor() {
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ marginTop: 20, padding: 10, borderRadius: 4, width: '100%', height: '100px', border: '2px solid #d3d3d3' }}>
+          <div style={{ marginTop: 20, bottom: 20, padding: 10, borderRadius: 4, width: '100%', height: '100px', border: '2px solid #d3d3d3' }}>
             {errors && errors.length && errors.map((error:any, index:number) => (
               <>
               {error?.error && <div className="error" >{error?.error} (line:{error?.line})</div>}
@@ -174,20 +207,53 @@ function Editor() {
           <div
             className="copybutton"
             onClick={() => {
-              const text = value;
-
-              if (errors?.errors?.length) {
-                alert('');
+              const onlyErrors = errors?.filter((error: any) => error.error);
+              if (onlyErrors.length) {
+                errorToast();
+              } else {
+                const text = value;
+                copy(text);
+                successToast();
               }
-
-              copy(text);
             }}>
             <span>
               복사하기
           </span>
           </div>
+           <a
+            className="contribute"
+            onClick={() => {
+              const titleKeyword = nomalizedText(value)[0].indexOf('#');
+              console.log(titleKeyword);
+              if (titleKeyword < 0) {
+                titleErrorToast();
+                return;
+              }
+              if (!nomalizedText(value)[0].split('#')[1].trim()[0]) {
+                titleErrorToast();
+                return;
+              }
+              const prefix = nomalizedText(value)[0].split('#')[1].trim()[0].toUpperCase();
+              window.open(`https://github.com/meotitda/DICTIONARY/new/master/DIC/${prefix}`);
+            }}>
+            <span>
+              단어 등록 하러가기
+          </span>
+          </a>
         </div>
       </div>
+      </>
+      <ToastContainer
+position="bottom-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
     </>
   );
 }

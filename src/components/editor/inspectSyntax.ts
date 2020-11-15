@@ -65,7 +65,7 @@ export function inspectSyntax(text: string = '') {
   const labelErrors = inspectLabel(lines);
   const hashTagErrors = inspectHashtag(lines);
   const contentErrors = inspectContent(lines);
-  return errors.concat(titleErrors, labelErrors, hashTagErrors, contentErrors);
+  return errors.concat(titleErrors, labelErrors, hashTagErrors, contentErrors).filter((error: any) => error);
 }
 
 function inspectTitle(line: any) {
@@ -73,7 +73,7 @@ function inspectTitle(line: any) {
     return [{ error: ERROR.NO_TITLE(), line: 1 }];
   }
   const title = line.match(TITLE_REGEX);
-  if (!title) {
+  if (!title || (title && title[0].length <= 1)) {
     return [{ error: ERROR.NO_TITLE(), line: 1 }];
   }
 }
@@ -148,7 +148,7 @@ function resetCursorPosition() {
   cursor.position = 0;
 }
 
-function nomalizedText(text: any) {
+export function nomalizedText(text: any) {
   const rowLines = text.split('\n');
   const filteredLines = rowLines.filter((line: any) => line !== '');
   return filteredLines.map((filteredLine: any) => filteredLine.trim());

@@ -41,3 +41,39 @@
 .warning {
     color: orange
 }
+
+.contribute {
+    border-radius: 4px;
+    background: linear-gradient(to right, #4ca2cb, #6e4ccb) !important;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 22px;
+    padding: 20px;
+    width: 240px;
+    transition: all 0.4s;
+    cursor: pointer;
+    margin: 20px 5px 0px 0px;
+}
+.contribute span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.4s;
+}
+.contribute span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -40px;
+    transition: 0.5s;
+}
+.contribute:hover span {
+    padding-right: 25px;
+}
+.contribute:hover span:after {
+    opacity: 1;
+    right: 0;
+}
