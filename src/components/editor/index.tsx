@@ -157,10 +157,14 @@ function Editor() {
     <>
       <div style={{ padding: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div>
+          <div style={{ width: '50vw' }}>
             <MDEditor
               value={value}
               onChange={setValue}
+              previewOptions ={{
+                skipHtml: false
+              } as any }
+
               height={'100%'}
               preview={'edit'}
               commands={[
@@ -189,12 +193,12 @@ function Editor() {
               ]}
             />
           </div>
-          <div style={{ padding: 10, borderRadius: 4, width: '100%', border: '2px solid #d3d3d3', marginLeft: '40px' }}>
+          <div style={{ top: 0, right: 20, width: '50vw', overflow: 'auto', padding: 10, borderRadius: 4, border: '2px solid #d3d3d3', marginLeft: '40px' }}>
             <ReactMarkdownWithHtml allowDangerousHtml plugins={[gfm]} children={value} />
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ marginTop: 20, bottom: 20, padding: 10, borderRadius: 4, width: '100%', height: '100px', border: '2px solid #d3d3d3' }}>
+          <div style={{ width: '100%', marginTop: 20, bottom: 20, padding: 10, borderRadius: 4, height: '100px', border: '2px solid #d3d3d3' }}>
             {errors && errors.length && errors.map((error:any, index:number) => (
               <>
               {error?.error && <div className="error" >{error?.error} (line:{error?.line})</div>}
