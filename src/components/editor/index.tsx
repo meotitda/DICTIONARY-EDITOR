@@ -228,17 +228,21 @@ function Editor() {
             className="contribute"
             onClick={() => {
               const titleKeyword = nomalizedText(value)[0].indexOf('#');
-              console.log(titleKeyword);
+              const title = nomalizedText(value)[0].split('# ')[1];
+
+              console.log(title);
+
               if (titleKeyword < 0) {
                 titleErrorToast();
                 return;
               }
+
               if (!nomalizedText(value)[0].split('#')[1].trim()[0]) {
                 titleErrorToast();
                 return;
               }
               const prefix = nomalizedText(value)[0].split('#')[1].trim()[0].toUpperCase();
-              window.open(`https://github.com/meotitda/DICTIONARY/new/master/DIC/${prefix}`);
+              window.open(`https://github.com/meotitda/DICTIONARY/new/master/DIC/${prefix}/doop?filename=${title}.md&value=${encodeURIComponent(value)}`);
             }}>
             <span>
               단어 등록 하러가기
