@@ -242,7 +242,7 @@ function Editor() {
                 return;
               }
               const prefix = nomalizedText(value)[0].split('#')[1].trim()[0].toUpperCase();
-              window.open(`https://github.com/meotitda/DICTIONARY/new/master/DIC/${prefix}/doop?filename=${title}.md&value=${encodeURIComponent(value)}`);
+              window.open(`https://github.com/meotitda/DICTIONARY/new/main/DIC/${prefix}/doop?filename=${title}.md&value=${encodeURIComponent(value)}`);
             }}>
             <span>
               단어 등록 하러가기
